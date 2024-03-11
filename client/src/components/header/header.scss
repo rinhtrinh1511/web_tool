@@ -1,28 +1,30 @@
 .a {
     width: 100%;
     height: 84px;
-    background-color: rgba(67, 66, 68, 0.514);
+  
     position: fixed;
     top:0;
     z-index: 1;
     .header-wrap {
         display: flex;
         justify-content: space-between;
-        width: 62%;
-        margin: auto;
+        width: 98%;
+        margin: 12px auto;
         height: 84px;
-        
+        padding-left:24px;
+        background-color: rgba(67, 66, 68, 0.514);
+        border-radius: 16px;
         align-items: center;
-        border-radius: 4px;
+        box-sizing: border-box;
         .logo {
             width: 30%;
             img {
                 size: 12px;
-                width: 140px;
+                width: 160px;
             }
         }
         .header-mid {
-            width: 40%;
+            width: 46%;
             display: flex;
             justify-content: space-evenly;
             li {
@@ -41,8 +43,7 @@
         }
         .header-login {
             display: flex;
-            width: 20%;
-            justify-content: space-around;
+            width: 16%;
             text-transform: uppercase;
             font-weight: 600;
             .login {
@@ -77,8 +78,9 @@
             background-size 0.3s calc(0.3s - var(--_s, 0s));
     }
     .hover-3:hover {
+        transform: scale(1.05);
         --_p: 100%;
-        --_s: 0.3s;
+        --_s: 0.2s;
     }
     .rainbow {
         background-color: #343a40;

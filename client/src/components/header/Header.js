@@ -1,10 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./header.scss";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
-
+import {
+    faAngleDown,
+    faCoins,
+    faCreditCard,
+    faCube,
+    faHome,
+    faSkullCrossbones,
+    faUser,
+} from "@fortawesome/free-solid-svg-icons";
+import { faSquarespace } from "@fortawesome/free-brands-svg-icons";
 function Header() {
+    const [name, setName] = useState("");
+
+    useEffect(() => {
+        const accessUsername = localStorage.getItem("name");
+        if (accessUsername) {
+            setName(accessUsername);
+        }
+    }, []);
     return (
         <div className="a">
             <div className="header-wrap">
@@ -18,29 +34,97 @@ function Header() {
                 </div>
                 <ul className="header-mid">
                     <li className="home hover-3">
-                        <Link to={"/"}>Trang chủ</Link>
+                        <Link to={"/"}>
+                            <FontAwesomeIcon
+                                icon={faHome}
+                                style={{ marginRight: "4px" }}
+                            />
+                            Trang chủ
+                        </Link>
                     </li>
                     <li className="topup hover-3">
-                        <Link to={"/"}>Nạp tiền</Link>
+                        <Link to={"/"}>
+                            <FontAwesomeIcon
+                                icon={faCoins}
+                                style={{ marginRight: "4px" }}
+                            />
+                            xem giảm giá
+                        </Link>
                     </li>
                     <li className="tutorial hover-3">
-                        <Link to={"/"}>Hướng dẫn</Link>
+                        <Link to={"/"}>
+                            <FontAwesomeIcon
+                                icon={faCreditCard}
+                                style={{ marginRight: "4px" }}
+                            />
+                            Nạp tiền
+                            <FontAwesomeIcon
+                                icon={faAngleDown}
+                                style={{ marginLeft: "8px" }}
+                            />
+                        </Link>
                     </li>
                     <li className="history-trade hover-3">
-                        <Link to={"/"}>Lịch sử giao dịch</Link>
+                        <Link to={"/"}>
+                            {" "}
+                            <FontAwesomeIcon
+                                icon={faCube}
+                                style={{ marginRight: "4px" }}
+                            />
+                            Lịch sử
+                            <FontAwesomeIcon
+                                icon={faAngleDown}
+                                style={{ marginLeft: "8px" }}
+                            />
+                        </Link>
+                    </li>
+                    <li className="history-trade hover-3">
+                        <Link to={"/"}>
+                            <FontAwesomeIcon
+                                icon={faSquarespace}
+                                style={{ marginRight: "4px" }}
+                            />
+                            Danh mục khác
+                            <FontAwesomeIcon
+                                icon={faAngleDown}
+                                style={{ marginLeft: "8px" }}
+                            />
+                        </Link>
                     </li>
                 </ul>
-                <div className="header-login">
-                    <Link to={"/login"}>
-                        <div className="login rainbow">
-                            <FontAwesomeIcon icon={faUser} className="icons" />
-                            Đăng nhập
-                        </div>
-                    </Link>
-                    <div className="resgiter rainbow">
-                        <Link to={"/"}>Đăng ký</Link>
+                {name ? (
+                    <div className="header-login">
+                        <Link to={"/profile"}>
+                            <div
+                                className="login rainbow"
+                                style={{ textAlign: "center" }}
+                            >
+                                <FontAwesomeIcon
+                                    icon={faSkullCrossbones}
+                                    className="icons"
+                                />
+                                Xin chào: {name} 
+                                <br />
+                                SD: 1.000.000&#8363;
+                            </div>
+                        </Link>
                     </div>
-                </div>
+                ) : (
+                    <div className="header-login">
+                        <Link to={"/login"}>
+                            <div className="login rainbow">
+                                <FontAwesomeIcon
+                                    icon={faUser}
+                                    className="icons"
+                                />
+                                Đăng nhập
+                            </div>
+                        </Link>
+                        <div className="resgiter rainbow">
+                            <Link to={"/register"}>Đăng ký</Link>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );

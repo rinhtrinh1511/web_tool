@@ -8,25 +8,28 @@ const db = connectToDatabase();
 exports.login = (req, res) => {
     const { username, password } = req.body;
 
-    // Thực hiện câu truy vấn để lấy mật khẩu đã được mã hóa từ cơ sở dữ liệu
+    if (!username || !password) {
+        return res.status(400).json("Tên đăng nhập và mật khẩu là bắt buộc");
+    }
+
     db.query(
         "SELECT * FROM users WHERE username = ?",
         [username],
         (err, result) => {
             if (err) {
-                res.status(500).send("Internal Server Error");
-                return;
-            }
-            if (result.length === 0) {
-                res.status(401).send("Invalid credentials");
-                return;
+                return res.status(500).json("Internal Server Error");
             }
 
+            if (result.length === 0) {
+                return res.status(401).json("Tài khoản không tồn tại");
+            }
+            const user = result[0];
+            const name = user.name;
             bcrypt.compare(password, result[0].password, (err, isMatch) => {
                 if (err) {
-                    res.status(500).send("Internal Server Error");
-                    return;
+                    return res.status(500).json("Internal Server Error");
                 }
+
                 if (isMatch) {
                     const token = jwt.sign(
                         { username: username },
@@ -36,9 +39,15 @@ exports.login = (req, res) => {
                         }
                     );
 
-                    res.status(200).json({ success: true, token: token });
+                    return res.status(200).json({
+                        success: true,
+                        name: name,
+                        token: token,
+                    });
                 } else {
-                    res.status(401).send("Invalid credentials");
+                    return res
+                        .status(401)
+                        .json("Thông tin đăng nhập không hợp lệ");
                 }
             });
         }
@@ -46,40 +55,66 @@ exports.login = (req, res) => {
 };
 
 exports.register = (req, res) => {
-    const { name, username, password, confirmPassword } = req.body;
+    const { email, username, password, confirmPassword } = req.body;
 
-    if (password !== confirmPassword) {
-        return res
-            .status(400)
-            .send("Password and confirm password do not match");
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        return res.status(400).send("Email không hợp lệ.");
     }
 
-    // Mã hóa mật khẩu
-    bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(password, salt, (err, hash) => {
-            if (err) throw err;
+    if (!username || !password) {
+        return res.status(400).json("Tên đăng nhập và mật khẩu là bắt buộc");
+    }
 
-            db.query(
-                "INSERT INTO users (name, username, password) VALUES (?, ?, ?)",
-                [name, username, hash],
-                (err, result) => {
-                    if (err) {
-                        console.error("Error inserting user:", err);
-                        return res.status(500).send("Internal Server Error");
-                    }
-                    if (result.affectedRows === 1) {
-                        return res
-                            .status(200)
-                            .send("User successfully registered");
-                    } else {
-                        return res.status(500).send("Failed to register user");
-                    }
-                }
-            );
-        });
-    });
+    if (password !== confirmPassword) {
+        return res.status(400).send("Xác nhận mật khẩu lỗi.");
+    }
+    if (username.length < 6 || password.length < 6) {
+        return res
+            .status(400)
+            .send("Tài khoản hoặc mật khẩu phải có ít nhất 6 kí tự");
+    }
+    db.query(
+        "SELECT * FROM users WHERE username = ?",
+        [username],
+        (err, rows) => {
+            if (err) {
+                console.error("Error querying users:", err);
+                return res.status(500).send("Internal Server Error");
+            }
+            if (rows.length > 0) {
+                return res.status(400).send("Tài khoản đã tồn tại.");
+            }
+            // Mã hóa mật khẩu
+            bcrypt.genSalt(10, (err, salt) => {
+                bcrypt.hash(password, salt, (err, hash) => {
+                    if (err) throw err;
+                    db.query(
+                        "INSERT INTO users (name, username, password) VALUES (?, ?, ?)",
+                        [email, username, hash],
+                        (err, result) => {
+                            if (err) {
+                                return res
+                                    .status(500)
+                                    .send("Internal Server Error");
+                            }
+                            if (result.affectedRows === 1) {
+                                return res
+                                    .status(200)
+                                    .send("Đăng ký tài khoản thành công.");
+                            } else {
+                                return res
+                                    .status(500)
+                                    .send("Failed to register user");
+                            }
+                        }
+                    );
+                });
+            });
+        }
+    );
 };
 
-exports.getUserProfile = (req,res)=>{
-    console.log("token được xác nhận")
-}
+exports.getUserProfile = (req, res) => {
+    console.log("token được xác nhận");
+};

@@ -1,0 +1,35 @@
+.profile-wrap {
+    width: 62%;
+    margin: 120px auto 32px auto;
+    height: 100vh;
+}
+
+  
+  .profile-table {
+    width: 40%;
+    border-collapse: collapse;
+  }
+  
+  .profile-table th{
+    width: 10%;
+    padding: 8px;
+    border-bottom: 1px solid #f1e6e6;
+  }
+  .profile-table td {
+    width: 30%;
+    padding: 8px;
+    border-bottom: 1px solid #fff8f8;
+  }
+  .profile-table th {
+    text-align: left;
+    font-weight: bold;
+  }
+  
+  .profile-table td {
+    text-align: left;
+  }
+  
+  .profile-table tr:last-child td {
+    border-bottom: none;
+  }
+  

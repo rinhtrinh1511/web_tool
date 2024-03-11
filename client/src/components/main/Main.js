@@ -4,12 +4,12 @@ import "./main.scss";
 function Main() {
     return (
         <div className="main-wrap">
-            <div class="allTool-title">
-                <div class="aTool-container-title">
-                    <div class="box-allTool">
+            <div className="allTool-title">
+                <div className="aTool-container-title">
+                    <div className="box-allTool">
                         <h1>Danh Mục Tool</h1>
                     </div>
-                    <div class="allTool-gradient-border"></div>
+                    <div className="allTool-gradient-border"></div>
                 </div>
             </div>
             <div className="box-product-tool">
@@ -35,7 +35,7 @@ function Main() {
                                 alt="logo"
                             />
                         </div>
-                        <div className="name-tool">TOOL UP ĐỆ TỬ</div>
+                        <div className="name-tool">TOOL nhặt ngọc</div>
                         <div className="price">Giá/1</div>
                         <div className="price-count">Số lượt mua</div>
                         <div className="view-tool">Xem ngay</div>
@@ -77,7 +77,7 @@ function Main() {
                                 alt="logo"
                             />
                         </div>
-                        <div className="name-tool">TOOL UP ĐỆ TỬ</div>
+                        <div className="name-tool">Share client</div>
                         <div className="price">Giá/1</div>
                         <div className="price-count">Số lượt mua</div>
                         <div className="view-tool">Xem ngay</div>
@@ -85,12 +85,12 @@ function Main() {
                 </div>
                 
             </div>
-            <div class="allTool-title">
-                <div class="aTool-container-title">
-                    <div class="box-allTool">
+            <div className="allTool-title">
+                <div className="aTool-container-title">
+                    <div className="box-allTool">
                         <h1>Danh Mục VPS</h1>
                     </div>
-                    <div class="allTool-gradient-border"></div>
+                    <div className="allTool-gradient-border"></div>
                 </div>
             </div>
             <div className="box-produect-vps box-product-tool">
