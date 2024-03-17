@@ -1,11 +1,16 @@
 /* HTML: <div class="loader"></div> */
 .loader {
-    width: 60px;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(201, 16, 16);
     aspect-ratio: 2;
-    --_g: no-repeat radial-gradient(circle closest-side, #f8f8f8 90%, #0000);
+    --_g: no-repeat radial-gradient(circle closest-side, #f8f8f8 90%, #eb0505);
     background: var(--_g) 0% 50%, var(--_g) 50% 50%, var(--_g) 100% 50%;
     background-size: calc(100% / 3) 50%;
     animation: l3 1s infinite linear;
+    display: flex;
+    justify-content: center;
+    z-index: 1000000;
 }
 @keyframes l3 {
     20% {

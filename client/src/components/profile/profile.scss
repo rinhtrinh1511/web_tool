@@ -2,7 +2,7 @@
     width: 62%;
     margin: 120px auto 32px auto;
     display: flex;
-    height: 100vh;
+    height: 80vh;
     justify-content: space-between;
 
     .card {
@@ -11,6 +11,7 @@
         .card-wrap {
             padding: 1.2rem;
             background-color: rgb(255, 255, 255);
+            box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
             border-radius: 12px;
             header {
                 font-size: 20px;

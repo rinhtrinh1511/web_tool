@@ -222,10 +222,9 @@ exports.purchase = (req, res) => {
     const userId = req.body.userId;
     const productId = req.body.productId;
     const discount = req.body.discount;
-    console.log("mdg", discount);
-
+    const category = req.body.category;
     const getUserQuery = `SELECT * FROM users WHERE id = ${userId}`;
-    const getProductQuery = `SELECT * FROM vps WHERE id = ${productId}`;
+    const getProductQuery = `SELECT * FROM ${category} WHERE id = ${productId}`;
     let getDiscount = `SELECT * FROM discount WHERE name = ${discount}`;
     if (discount) {
         getDiscount = `SELECT * FROM discount WHERE name = '${discount}'`;
@@ -242,9 +241,11 @@ exports.purchase = (req, res) => {
         }
 
         const user = userResult[0];
+        console.log(user);
         db.query(getProductQuery, (err, productResult) => {
             if (err) {
                 res.status(500).json({ error: "Internal server error" });
+                console.log(err);
                 return;
             }
 
@@ -254,6 +255,7 @@ exports.purchase = (req, res) => {
             }
 
             const product = productResult[0];
+
             if (user.usd < product.price) {
                 res.status(403).json({
                     error: "Số dư không đủ, vui lòng nạp thêm.",
@@ -361,17 +363,16 @@ exports.purchase = (req, res) => {
     });
 };
 
-exports.updatePurchase = (req, res) => {
-    const userId = req.body.userId;
-    db.query("SELECT * FROM users WHERE id = ?", [userId], (err, rows) => {
+exports.getDiscount = (req, res) => {
+    const getDiscountQuery = `SELECT * FROM discount`;
+    db.query(getDiscountQuery, (err, rows) => {
         if (err) {
-            console.log(err);
             return res.status(500).send("Internal Server Error");
         }
         if (rows.length > 0) {
             return res.status(200).send(rows);
         } else {
-            return res.status(404).send("No vps found");
+            return res.status(404).send("No tools found");
         }
     });
 };

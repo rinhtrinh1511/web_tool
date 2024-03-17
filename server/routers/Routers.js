@@ -15,4 +15,6 @@ router.get("/users/:userID/usd", Controller.getUSD);
 
 router.post("/purchase", Controller.purchase);
 
+router.get("/discount", Controller.getDiscount);
+
 module.exports = router;

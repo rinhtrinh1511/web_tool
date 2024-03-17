@@ -1,9 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../header/Header";
 import Footer from "../footer/Footer";
 import "./discount.scss";
-
+import { useDispatch, useSelector } from "react-redux";
+import { DiscountAll } from "../../redux/request/api";
 function Discount() {
+    const [discount, setDiscount] = useState("");
+    const dispatch = useDispatch();
+    const discounts = useSelector((state) => state.discount);
+    useEffect(() => {
+        const fetchData = async () => {
+            await DiscountAll(dispatch);
+        };
+
+        fetchData();
+    }, [dispatch]);
+
+    useEffect(() => {
+        if (!discounts.isLoading) {
+            setDiscount(discounts.discount);
+        }
+    }, [discounts, setDiscount]);
+    console.log(discount);
     return (
         <React.Fragment>
             <Header />
@@ -20,13 +38,35 @@ function Discount() {
                         </tr>
                     </thead>
                     <tbody>
-                        <td>1</td>
-                        <td style={{ color: "#21dd21", fontWeight: "600" }}>
-                            RINHDZ
-                        </td>
-                        <td style={{ fontWeight: "600" }}>5%</td>
-                        <td style={{ fontWeight: "600" }}>tất cả</td>
-                        <td style={{ color: "red", fontWeight: "600" }}>5 Lượt</td>
+                        {Object.values(discount).map((discount, index) => {
+                            return (
+                                <tr key={index}>
+                                    <td>{discount.id}</td>
+                                    <td
+                                        style={{
+                                            color: "#21dd21",
+                                            fontWeight: "600",
+                                        }}
+                                    >
+                                        {discount.name}
+                                    </td>
+                                    <td style={{ fontWeight: "600" }}>
+                                        {discount.total_discount}%
+                                    </td>
+                                    <td style={{ fontWeight: "600" }}>
+                                        {discount.category}
+                                    </td>
+                                    <td
+                                        style={{
+                                            color: "red",
+                                            fontWeight: "600",
+                                        }}
+                                    >
+                                        {discount.remaining_usage} Lượt
+                                    </td>
+                                </tr>
+                            );
+                        })}
                     </tbody>
                 </table>
             </div>

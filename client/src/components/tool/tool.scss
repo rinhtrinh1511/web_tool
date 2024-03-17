@@ -30,6 +30,7 @@
         }
         .config {
             display: flex;
+            justify-content: space-between;
             .core {
                 margin: 8px;
                 font-size: 1.1rem;

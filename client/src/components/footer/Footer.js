@@ -10,9 +10,9 @@ function Footer() {
                     href="https://www.facebook.com/ring.dev123/"
                     style={{ color: "red" }}
                 >
-                    &nbsp;RING
+                    &nbsp;RING&nbsp;
                 </a>
-                , POWER BY VISUAL STUDIO
+                POWER BY VISUAL STUDIO
             </div>
         </div>
     );

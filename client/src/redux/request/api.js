@@ -29,6 +29,11 @@ import {
     purchaseStart,
     purchaseSuccess,
 } from "../slice/purchase";
+import {
+    discountFalse,
+    discountStart,
+    discountSuccess,
+} from "../slice/discount";
 
 export const login = async (formData, dispatch, navigate) => {
     dispatch(loginStart());
@@ -98,10 +103,29 @@ export const purchaseProduct = async (dispatch, info) => {
     dispatch(purchaseStart());
     try {
         const res = await axios.post("/api/v1/purchase", info);
-        console.log();
         localStorage.setItem("userData", JSON.stringify(res.data));
         dispatch(purchaseSuccess(res.data));
     } catch (error) {
         dispatch(purchaseFalse());
+    }
+};
+export const purchaseProductTool = async (dispatch, info) => {
+    dispatch(purchaseStart());
+    try {
+        const res = await axios.post("/api/v1/purchase", info);
+        localStorage.setItem("userData", JSON.stringify(res.data));
+        dispatch(purchaseSuccess(res.data));
+    } catch (error) {
+        dispatch(purchaseFalse());
+    }
+};
+
+export const DiscountAll = async (dispatch) => {
+    dispatch(discountStart());
+    try {
+        const res = await axios.get("/api/v1/discount");
+        dispatch(discountSuccess(res.data));
+    } catch (error) {
+        dispatch(discountFalse(error.response.data));
     }
 };

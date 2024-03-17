@@ -16,10 +16,10 @@ function VpsDetail() {
         userId: "",
         productId: "",
         discount: "",
+        category: "",
     });
     const dispatch = useDispatch();
     const vpsDetail = useSelector((state) => state.vps);
-
     useEffect(() => {
         if (id) {
             getVPSDetail(dispatch, id);
@@ -35,6 +35,7 @@ function VpsDetail() {
             productId: id,
             userId: data1.id,
             discount: discount,
+            category: "vps",
         });
         setData(vpsDetail.vps);
     }, [id, vpsDetail.vps, data1.id, discount]);
