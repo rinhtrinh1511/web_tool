@@ -1,0 +1,39 @@
+.discount {
+    width: 62%;
+    background-color: rgb(255, 255, 255);
+    margin: 120px auto 48px auto;
+    border-radius: 8px;
+    padding: 24px;
+    box-sizing: border-box;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    table {
+        width: 100%;
+        border-radius: 8px;
+        text-align: center;
+        background-color: rgb(247, 246, 246);
+        box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+        thead {
+            background-color: #fafafa;
+            tr {
+                th {
+                    padding: 8px;
+                    background-color: #f0f0f0;
+                }
+                th:first-child {
+                    border-top-left-radius: 8px; /* Border cho cột đầu tiên */
+                }
+                th:last-child {
+                    border-top-right-radius: 8px;
+                }
+            }
+        }
+        tbody {
+            width: 100%;
+            tr {
+                td {
+                    padding: 8px;
+                }
+            }
+        }
+    }
+}

@@ -4,12 +4,9 @@ const authSlice = createSlice({
     name: "auth",
     initialState: {
         isLoading: false,
-        name: "",
-        token: null,
-        error: "",
-        err: "",
-        isSuccess: null,
-        showDropdown: true,
+        userData: {},
+        isSuccess: false,
+        error: null,
     },
     reducers: {
         loginStart: (state) => {
@@ -17,9 +14,7 @@ const authSlice = createSlice({
         },
         loginSuccess: (state, action) => {
             state.isLoading = false;
-            state.name = action.payload;
-            state.token = action.payload;
-            state.error = "";
+            state.userData = action.payload;
             state.isSuccess = true;
         },
         loginFalse: (state, action) => {
@@ -29,10 +24,7 @@ const authSlice = createSlice({
         },
         logout: (state) => {
             state.isLoading = false;
-            state.name = "";
-            state.token = null;
-            state.error = "";
-            state.showDropdown = true;
+            state.userData = {};
         },
         registerStart: (state) => {
             state.isLoading = true;

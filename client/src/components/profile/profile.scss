@@ -1,35 +1,50 @@
 .profile-wrap {
     width: 62%;
     margin: 120px auto 32px auto;
+    display: flex;
     height: 100vh;
-}
+    justify-content: space-between;
 
-  
-  .profile-table {
-    width: 40%;
-    border-collapse: collapse;
-  }
-  
-  .profile-table th{
-    width: 10%;
-    padding: 8px;
-    border-bottom: 1px solid #f1e6e6;
-  }
-  .profile-table td {
-    width: 30%;
-    padding: 8px;
-    border-bottom: 1px solid #fff8f8;
-  }
-  .profile-table th {
-    text-align: left;
-    font-weight: bold;
-  }
-  
-  .profile-table td {
-    text-align: left;
-  }
-  
-  .profile-table tr:last-child td {
-    border-bottom: none;
-  }
-  
+    .card {
+        width: 50%;
+        padding: 0.425rem;
+        .card-wrap {
+            padding: 1.2rem;
+            background-color: rgb(255, 255, 255);
+            border-radius: 12px;
+            header {
+                font-size: 20px;
+                font-weight: 600;
+            }
+            .form-row {
+                display: flex;
+                flex-direction: row;
+
+                .form-column {
+                    flex: 1;
+                    margin-right: 0.5rem;
+                    padding-top: 12px;
+
+                    input {
+                        width: 100%;
+                        cursor: pointer;
+                    }
+                    input:disabled {
+                        cursor: not-allowed;
+                    }
+
+                    .change-form {
+                        background-color: #f64b1e;
+                        justify-content: center;
+                        display: flex;
+                        align-items: center;
+                        border-radius: 8px;
+                        height: 32px;
+                        font-weight: 600;
+                        color: white;
+                    }
+                }
+            }
+        }
+    }
+}

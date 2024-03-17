@@ -5,13 +5,13 @@ import "./login.scss";
 import Footer from "../footer/Footer";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../redux/request/api";
+import { TextField, Button } from "@mui/material";
 
 function Login() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [error, setError] = useState("");
     const data = useSelector((state) => state.auth);
-
     useEffect(() => {
         setError(data.error);
         const token = localStorage.getItem("token");
@@ -32,7 +32,6 @@ function Login() {
 
         login(formData, dispatch, navigate);
     };
-
     return (
         <React.Fragment>
             <Header />
@@ -41,31 +40,30 @@ function Login() {
                     <form className="login1" onSubmit={handleSubmit}>
                         <p>Đăng nhập</p>
                         <div className="screen-1">
-                            <div className="email">
-                                <label htmlFor="username">Tài khoản</label>
-                                <div className="sec-2">
-                                    <input
-                                        type="text"
-                                        name="username"
-                                        placeholder="Nhập tài khoản"
-                                        onChange={handleChange}
-                                    />
-                                </div>
-                            </div>
-                            <div className="password">
-                                <label htmlFor="password">Mật khẩu</label>
-                                <div className="sec-2">
-                                    <input
-                                        type="password"
-                                        name="password"
-                                        placeholder="Nhập mật khẩu"
-                                        onChange={handleChange}
-                                    />
-                                </div>
-                            </div>
-                            <button className="login" type="submit">
+                            <TextField
+                                id="outlined-basic"
+                                label="Tài khoản"
+                                name="username"
+                                variant="outlined"
+                                onChange={handleChange}
+                                fullWidth
+                                style={{ height: "80px" }}
+                            />
+
+                            <TextField
+                                id="outlined-basic1"
+                                label="Mật khẩu"
+                                name="password"
+                                type="password"
+                                variant="outlined"
+                                onChange={handleChange}
+                                fullWidth
+                                style={{ height: "80px" }}
+                            />
+
+                            <Button variant="contained" type="submit" fullWidth>
                                 Đăng nhập
-                            </button>
+                            </Button>
                             <h4 style={{ textAlign: "center", color: "red" }}>
                                 {error}
                             </h4>

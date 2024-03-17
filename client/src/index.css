@@ -1,21 +1,26 @@
-* {
-    color: white;
-    a {
-        text-decoration: none;
-    }
-    li{
-        list-style: none;
-    }
-    
-}
-body{
+
+
+
+body {
     width: 100%;
     margin: auto;
     padding: auto;
-    background-color: rgb(51, 50, 50);
-    font-family: "Roboto Mono", monospace;
+    color: rgb(80, 71, 71);
+    background-color: rgb(241, 245, 249);
+    /* background-color: rgb(51, 50, 50); */
     background-image: url(./img/bg1.png);
     background-repeat: no-repeat;
     position: relative;
     background-attachment: fixed;
+    text-transform: capitalize;
+    font-family: "Chakra Petch", sans-serif;
+    line-height: 1.5;
+   
+}
+a {
+    text-decoration: none;
+    color: rgb(80, 71, 71);
+}
+li {
+    list-style: none;
 }

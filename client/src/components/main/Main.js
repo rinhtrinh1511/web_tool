@@ -1,171 +1,145 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./main.scss";
+import { useDispatch, useSelector } from "react-redux";
+import { getTool } from "../../redux/request/api";
+import { getVPS } from "../../redux/request/api";
+import { Link } from "react-router-dom";
+import { LinearProgress } from "@mui/material";
 
 function Main() {
+    const [isFetched, setIsFetched] = useState(false);
+    const [progress, setProgress] = useState(0);
+    const [tool, setTool] = useState([]);
+    const [vps, setVps] = useState([]);
+    const dispatch = useDispatch();
+    const tools = useSelector((state) => state.tools);
+    const vpss = useSelector((state) => state.vps);
+
+    useEffect(() => {
+        setTool(tools.tool);
+        setVps(vpss.vps);
+        if (!isFetched) {
+            getTool(dispatch);
+            getVPS(dispatch);
+            setIsFetched(true);
+        }
+        const interval = setInterval(() => {
+            setProgress((prevProgress) =>
+                prevProgress >= 100 ? 100 : prevProgress + 10
+            );
+        }, 500);
+
+        return () => {
+            clearInterval(interval);
+        };
+    }, [dispatch, isFetched, tools, vpss]);
     return (
-        <div className="main-wrap">
-            <div className="allTool-title">
-                <div className="aTool-container-title">
-                    <div className="box-allTool">
-                        <h1>Danh Mục Tool</h1>
+        <React.Fragment>
+            {tools.isLoading ? (
+                <LinearProgress
+                    variant="determinate"
+                    color="secondary"
+                    value={progress}
+                />
+            ) : null}
+            <div className="main-wrap">
+                <div className="allTool-title">
+                    <div className="aTool-container-title">
+                        <div className="box-allTool">
+                            <h1>Danh Mục Tool</h1>
+                        </div>
+                        <div className="allTool-gradient-border"></div>
                     </div>
-                    <div className="allTool-gradient-border"></div>
+                </div>
+
+                <div className="box-product-tool">
+                    {tool &&
+                        Array.isArray(tool) &&
+                        tool.map((item, index) => {
+                            const priceFormatted = new Intl.NumberFormat(
+                                "vi-VN",
+                                {
+                                    style: "currency",
+                                    currency: "VND",
+                                }
+                            ).format(item.price);
+                            return (
+                                <div className="box-slider" key={index}>
+                                    <div className="slider-tool">
+                                        <div className="img">
+                                            <img
+                                                src="https://dblegends.net/assets/gasha/gasha_2009600.webp"
+                                                alt="logo"
+                                            />
+                                        </div>
+                                        <div className="name-tool">
+                                            {item.name}
+                                        </div>
+                                        <div className="price">
+                                            Giá {priceFormatted}/1
+                                        </div>
+                                        <div className="price-count">
+                                            Số lượt mua: {item.download_count}
+                                        </div>
+                                        <Link to={`/tool/${item.id}`}>
+                                            <div className="view-tool">
+                                                Quất luôn
+                                            </div>
+                                        </Link>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                </div>
+                <div className="allTool-title">
+                    <div className="aTool-container-title">
+                        <div className="box-allTool">
+                            <h1>Danh Mục VPS</h1>
+                        </div>
+                        <div className="allTool-gradient-border"></div>
+                    </div>
+                </div>
+                <div className="box-produect-vps box-product-tool">
+                    {vps &&
+                        Array.isArray(vps) &&
+                        vps.map((item, index) => {
+                            const priceFormatted = new Intl.NumberFormat(
+                                "vi-VN",
+                                {
+                                    style: "currency",
+                                    currency: "VND",
+                                }
+                            ).format(item.price);
+                            return (
+                                <div className="box-slider" key={index}>
+                                    <div className="slider-tool">
+                                        <div className="img">
+                                            <img
+                                                src="https://www.global-dms.com/wp-content/uploads/2022/04/vps-hosting.png"
+                                                alt="logo"
+                                            />
+                                        </div>
+                                        <div className="name-tool">
+                                            {item.name}
+                                        </div>
+                                        <div className="price">
+                                            Giá {priceFormatted}/1
+                                        </div>
+                                        <div className="price-count">
+                                            Số lượt mua: {item.purchases_count}
+                                        </div>
+                                        <Link to={`/vps/${item.id}`}>
+                                            <div className="view-tool">
+                                                Quất luôn
+                                            </div>
+                                        </Link>
+                                    </div>
+                                </div>
+                            );
+                        })}
                 </div>
             </div>
-            <div className="box-product-tool">
-                <div className="box-slider">
-                    <div className="slider-tool">
-                        <div className="img">
-                            <img
-                                src="https://dblegends.net/assets/gasha/gasha_2009600.webp"
-                                alt="logo"
-                            />
-                        </div>
-                        <div className="name-tool">TOOL UP ĐỆ TỬ</div>
-                        <div className="price">Giá/1</div>
-                        <div className="price-count">Số lượt mua</div>
-                        <div className="view-tool">Xem ngay</div>
-                    </div>
-                </div>
-                <div className="box-slider">
-                    <div className="slider-tool">
-                        <div className="img">
-                            <img
-                                src="https://dblegends.net/assets/gasha/gasha_2009600.webp"
-                                alt="logo"
-                            />
-                        </div>
-                        <div className="name-tool">TOOL nhặt ngọc</div>
-                        <div className="price">Giá/1</div>
-                        <div className="price-count">Số lượt mua</div>
-                        <div className="view-tool">Xem ngay</div>
-                    </div>
-                </div>
-                <div className="box-slider">
-                    <div className="slider-tool">
-                        <div className="img">
-                            <img
-                                src="https://dblegends.net/assets/gasha/gasha_2009600.webp"
-                                alt="logo"
-                            />
-                        </div>
-                        <div className="name-tool">TOOL UP ĐỆ TỬ</div>
-                        <div className="price">Giá/1</div>
-                        <div className="price-count">Số lượt mua</div>
-                        <div className="view-tool">Xem ngay</div>
-                    </div>
-                </div>
-                <div className="box-slider">
-                    <div className="slider-tool">
-                        <div className="img">
-                            <img
-                                src="https://dblegends.net/assets/gasha/gasha_2009600.webp"
-                                alt="logo"
-                            />
-                        </div>
-                        <div className="name-tool">TOOL UP ĐỆ TỬ</div>
-                        <div className="price">Giá/1</div>
-                        <div className="price-count">Số lượt mua</div>
-                        <div className="view-tool">Xem ngay</div>
-                    </div>
-                </div>
-                <div className="box-slider">
-                    <div className="slider-tool">
-                        <div className="img">
-                            <img
-                                src="https://dblegends.net/assets/gasha/gasha_2009600.webp"
-                                alt="logo"
-                            />
-                        </div>
-                        <div className="name-tool">Share client</div>
-                        <div className="price">Giá/1</div>
-                        <div className="price-count">Số lượt mua</div>
-                        <div className="view-tool">Xem ngay</div>
-                    </div>
-                </div>
-                
-            </div>
-            <div className="allTool-title">
-                <div className="aTool-container-title">
-                    <div className="box-allTool">
-                        <h1>Danh Mục VPS</h1>
-                    </div>
-                    <div className="allTool-gradient-border"></div>
-                </div>
-            </div>
-            <div className="box-produect-vps box-product-tool">
-                <div className="box-slider" title="VPS Việt">
-                    <div className="slider-tool">
-                        <div className="img">
-                            <img
-                                src="https://tothost.vn/wp-content/uploads/2023/08/image-43.png"
-                                alt="logo"
-                            />
-                        </div>
-                        <div className="name-tool">VPS VN 1-1</div>
-                        <div className="price">Giá 90.000$/1 VPS</div>
-                        <div className="price-count">Số lượt mua</div>
-                        <div className="view-tool">Gửi yêu cầu</div>
-                    </div>
-                </div>
-                <div className="box-slider">
-                    <div className="slider-tool">
-                        <div className="img">
-                            <img
-                                src="https://tothost.vn/wp-content/uploads/2023/08/image-43.png"
-                                alt="logo"
-                            />
-                        </div>
-                        <div className="name-tool">VPS 2-2</div>
-                        <div className="price">Giá 150.000$/1 VPS</div>
-                        <div className="price-count">Số lượt mua</div>
-                        <div className="view-tool">Gửi yêu cầu</div>
-                    </div>
-                </div>
-                <div className="box-slider">
-                    <div className="slider-tool">
-                        <div className="img">
-                            <img
-                                src="https://tothost.vn/wp-content/uploads/2023/08/image-43.png"
-                                alt="logo"
-                            />
-                        </div>
-                        <div className="name-tool">VPS 3-3</div>
-                        <div className="price">Giá 210.000$/1 VPS</div>
-                        <div className="price-count">Số lượt mua</div>
-                        <div className="view-tool">Gửi yêu cầu</div>
-                    </div>
-                </div>
-                <div className="box-slider">
-                    <div className="slider-tool">
-                        <div className="img">
-                            <img
-                                src="https://tothost.vn/wp-content/uploads/2023/08/image-43.png"
-                                alt="logo"
-                            />
-                        </div>
-                        <div className="name-tool">VPS 4-4</div>
-                        <div className="price">Giá 270.000$/1 VPS</div>
-                        <div className="price-count">Số lượt mua</div>
-                        <div className="view-tool">Gửi yêu cầu</div>
-                    </div>
-                </div>
-                <div className="box-slider">
-                    <div className="slider-tool">
-                        <div className="img">
-                            <img
-                                src="https://tothost.vn/wp-content/uploads/2023/08/image-43.png"
-                                alt="logo"
-                            />
-                        </div>
-                        <div className="name-tool">Vps tùy chọn</div>
-                        <div className="price">Giá thương lượng</div>
-                        <div className="price-count">Số lượt mua</div>
-                        <div className="view-tool">Gửi yêu cầu</div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        </React.Fragment>
     );
 }
 
