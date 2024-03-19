@@ -5,6 +5,7 @@ const purchaseSlice = createSlice({
     initialState: {
         isLoading: false,
         error: "",
+        isSuccess: true,
     },
     reducers: {
         purchaseStart: (state) => {
@@ -12,11 +13,13 @@ const purchaseSlice = createSlice({
         },
         purchaseSuccess: (state, action) => {
             state.isLoading = false;
-            state.error = "";
+            state.error = action.payload;
+            state.isSuccess =  true
         },
         purchaseFalse: (state, action) => {
-            state.isLoading = false;
+            state.isLoading = true;
             state.error = action.payload;
+            state.isSuccess =  false
         },
     },
 });

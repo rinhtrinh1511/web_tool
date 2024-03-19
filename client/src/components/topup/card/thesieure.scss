@@ -1,5 +1,18 @@
-.card-topup{
-    width: 62%;
-    margin: 120px 0 48px 0;
-    background-color: red;
+.container {
+  width: 62%;
+  margin: 120px auto 48px auto;
+}
+header {
+  padding: 12px 0;
+}
+.ab {
+  color: #f64b1e;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid #f64b1e;
+  font-weight: 600;
+  font-size: 16px;
+  p {
+    margin: 0;
+  }
 }

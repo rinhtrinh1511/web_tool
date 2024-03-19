@@ -2,8 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Controller = require("../controllers/index");
 
-router.post("/login", Controller.login);
-router.post("/register", Controller.register);
+//____________get____________//
 
 router.get("/tools", Controller.getTool);
 router.get("/tool/:id", Controller.getToolDetail);
@@ -13,8 +12,17 @@ router.get("/vps/:id", Controller.getVPSDetail);
 
 router.get("/users/:userID/usd", Controller.getUSD);
 
+router.get("/discount", Controller.getDiscount);
+
+//____________post____________//
+
+router.post("/login", Controller.login);
+router.post("/register", Controller.register);
+
+router.post("/topup", Controller.topUpTheSieuRe);
+
 router.post("/purchase", Controller.purchase);
 
-router.get("/discount", Controller.getDiscount);
+router.post("/history", Controller.History);
 
 module.exports = router;

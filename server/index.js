@@ -13,9 +13,9 @@ app.use(bodyParser.json());
 app.use("/api/v1/", Router);
 
 app.get("/", (req, res) => {
-    res.send("Server runing");
+  res.send("Server runing");
 });
 
 app.listen(port, () => {
-    console.log(`Server runing on port : ${port}`);
+  console.log(`Server runing on port : ${port}`);
 });

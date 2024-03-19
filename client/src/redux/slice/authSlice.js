@@ -1,13 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const initialState = {
+    isLoading: false,
+    userData: {},
+    isSuccess: false,
+    error: null,
+};
 const authSlice = createSlice({
     name: "auth",
-    initialState: {
-        isLoading: false,
-        userData: {},
-        isSuccess: false,
-        error: null,
-    },
+    initialState: initialState,
     reducers: {
         loginStart: (state) => {
             state.isLoading = true;
@@ -16,7 +17,9 @@ const authSlice = createSlice({
             state.isLoading = false;
             state.userData = action.payload;
             state.isSuccess = true;
+            state.error = "Đăng nhập thành công.";
         },
+
         loginFalse: (state, action) => {
             state.isLoading = false;
             state.error = action.payload;
@@ -25,10 +28,12 @@ const authSlice = createSlice({
         logout: (state) => {
             state.isLoading = false;
             state.userData = {};
+            state.error = null;
         },
-        registerStart: (state) => {
-            state.isLoading = true;
+        resetState: (state) => {
+            state.initialState = initialState;
         },
+
         registerSuccess: (state) => {
             state.isLoading = false;
             state.err = "";
@@ -39,9 +44,7 @@ const authSlice = createSlice({
             state.err = action.payload;
             state.isSuccess = false;
         },
-        setError: (state, action) => {
-            state.error = action.payload;
-        },
+
     },
 });
 export const {
@@ -52,7 +55,6 @@ export const {
     registerStart,
     registerFalse,
     registerSuccess,
-    setError,
 } = authSlice.actions;
 
 export default authSlice.reducer;

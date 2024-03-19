@@ -1,46 +1,45 @@
 .atm {
-    width: 50%;
-    height: 100vh;
-    margin: 120px auto 32px auto;
-    font-size: 20px;
-    font-weight: 600;
-    .atm-note {
-        width: 100%;
-        border-radius: 8px;
-        background-color: white;
-        padding: 24px;
-        .ab {
-            color: #f64b1e;
-            padding: 8px 16px;
-            border-radius: 8px;
-            border: 1px solid #f64b1e;
-            p {
-                margin: 0;
-            }
-        }
+  width: 50%;
+  height: 100vh;
+  margin: 120px auto 32px auto;
+  font-size: 20px;
+  font-weight: 600;
+  .atm-note {
+    width: 100%;
+    border-radius: 8px;
+    background-color: white;
+    padding: 24px;
+    .ab {
+      color: #f64b1e;
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: 1px solid #f64b1e;
+      p {
+        margin: 0;
+      }
     }
-    .topup-img {
+  }
+  .topup-img {
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+    padding: 24px;
+    .img-atm {
+      width: 32%;
+      padding: 0 12px;
+      background-color: #002b5b;
+      border-radius: 8px;
+      color: white;
+      .stk-atm {
+        padding: 8px 12px;
         display: flex;
-        width: 100%;
-        justify-content: space-evenly;
-        padding: 24px;
-        .img-atm {
-           
-            width: 32%;
-            padding: 0 12px;
-            background-color: #002b5b;
-            border-radius: 8px;
-            color: white;
-            .stk-atm{
-                padding: 8px 12px;
-                display: flex;
-                justify-content: space-between;
-                text-transform: none;
-                text-align: center;
-                p{
-                    margin: 0;
-                }
-            }
+        justify-content: space-between;
+        text-transform: none;
+        text-align: center;
+        p {
+          margin: 0;
         }
+      }
     }
+  }
 }
