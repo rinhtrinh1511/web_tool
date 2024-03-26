@@ -21,7 +21,6 @@ function Discount() {
       setDiscount(discounts.discount);
     }
   }, [discounts, setDiscount]);
-  console.log(discount);
   return (
     <React.Fragment>
       <Header />
@@ -40,7 +39,7 @@ function Discount() {
           <tbody>
             {Object.values(discount).map((discount, index) => {
               return (
-                <tr key={index}>
+                <tr key={index} className="td-hover">
                   <td>{discount.id}</td>
                   <td style={{ color: "#21dd21", fontWeight: "600" }}>
                     {discount.name}

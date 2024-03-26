@@ -57,8 +57,8 @@ export const login = async (formData, dispatch, navigate) => {
 export const register = async (formData, dispatch, navigate) => {
   dispatch(registerStart());
   try {
-    await axios.post("/api/v1/register", formData);
-    dispatch(registerSuccess());
+    const res = await axios.post("/api/v1/register", formData);
+    dispatch(registerSuccess(res.data));
     navigate("/login");
   } catch (error) {
     dispatch(registerFalse(error.response.data));
@@ -139,9 +139,29 @@ export const Topup = async (dispatch, infoCard) => {
 export const HistoryAll = async (dispatch, id) => {
   dispatch(historyStart());
   try {
-    const res = await axios.post("/api/v1/history", { id });
+    const res = await axios.post("/api/v1/history", {
+      id,
+    });
     dispatch(historySuccess(res.data));
   } catch (error) {
     dispatch(historyFalse(error.response.data));
+  }
+};
+
+export const getUsd = async (id) => {
+  try {
+    const res = await axios.get(`/api/v1/user/${id}`);
+    return res.data.usd;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getHistoryTopup = async (id) => {
+  try {
+    const res = await axios.get(`/api/v1/topup/${id}`);
+    return res.data;
+  } catch (err) {
+    console.log(err);
   }
 };

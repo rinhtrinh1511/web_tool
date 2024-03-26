@@ -14,6 +14,7 @@ import ATM from "./components/topup/atm/ATM";
 import Discount from "./components/discount/Discount";
 import Thesieure from "./components/topup/card/Thesieure";
 import History from "./components/history/History";
+import Active from "./components/active/Active";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path="/card" element={<Thesieure />} />
           <Route path="/discount" element={<Discount />} />
           <Route path="/history" element={<History />} />
+          <Route path="/active" element={<Active />} />
         </Routes>
       </BrowserRouter>
     </div>

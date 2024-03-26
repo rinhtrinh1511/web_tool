@@ -77,6 +77,7 @@ function VpsDetail() {
           {data &&
             Array.isArray(data) &&
             data.map((item, index) => {
+              const jsonArray = JSON.parse(item.description);
               let priceFormatted;
               let check;
               if (item.price === 0) {
@@ -89,7 +90,6 @@ function VpsDetail() {
                 }).format(item.price);
                 check = true;
               }
-              const jsonArray = JSON.parse(item.description);
 
               return (
                 <div key={index}>

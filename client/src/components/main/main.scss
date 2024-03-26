@@ -1,147 +1,148 @@
 .main-wrap {
-    width: 62%;
-    margin: 120px auto 32px auto;
-    .allTool-title .aTool-container-title .box-allTool {
-        width: 30%;
-        margin: 4px 36% 32px;
-        text-align: center;
-        background-image: linear-gradient(rgb(43, 41, 44), rgb(240, 215, 215)),
-            linear-gradient(rgb(55, 52, 58), rgb(240, 215, 215)),
-            linear-gradient(rgb(46, 44, 48), rgb(240, 215, 215)),
-            linear-gradient(rgb(42, 41, 44), rgb(240, 215, 215)),
-            linear-gradient(rgba(27, 59, 85, 0), rgba(70, 131, 180, 0));
-        background-repeat: no-repeat;
-        background-size: 2px 50%, 30% 2px, 2px 50%, 30% 2px,
-            calc(20% - 8px) calc(20% - 8px);
-        background-position: 70px 70%, 70px 85%, 79% 12px, 70% 12px, 4px 4px;
-        padding: 4px 0;
-    }
-    .allTool-title .aTool-container-title h1 {
-        font-size: 24px;
-        animation: 5s linear 0s infinite normal none running animate-allTool;
-    }
-    .box-product-tool {
-        display: flex;
-        flex-wrap: wrap;
-        margin: 0;
-        justify-content: space-between;
+  width: 62%;
+  margin: 120px auto 32px auto;
+  .allTool-title .aTool-container-title .box-allTool {
+    width: 30%;
+    margin: 4px 36% 32px;
+    text-align: center;
+    background-image: linear-gradient(rgb(43, 41, 44), rgb(240, 215, 215)),
+      linear-gradient(rgb(55, 52, 58), rgb(240, 215, 215)),
+      linear-gradient(rgb(46, 44, 48), rgb(240, 215, 215)),
+      linear-gradient(rgb(42, 41, 44), rgb(240, 215, 215)),
+      linear-gradient(rgba(27, 59, 85, 0), rgba(70, 131, 180, 0));
+    background-repeat: no-repeat;
+    background-size: 2px 50%, 30% 2px, 2px 50%, 30% 2px,
+      calc(20% - 8px) calc(20% - 8px);
+    background-position: 70px 70%, 70px 85%, 79% 12px, 70% 12px, 4px 4px;
+    padding: 4px 0;
+  }
+  .allTool-title .aTool-container-title h1 {
+    font-size: 24px;
+    animation: 5s linear 0s infinite normal none running animate-allTool;
+  }
+  .box-product-tool {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+    justify-content: space-between;
 
-        .box-slider {
-            display: flex;
-            width: calc(25% - 1.5rem);
-            margin: 8px 0 24px 0;
-            background-color: rgb(250, 250, 250);
-            border-radius: 8px;
-            box-shadow: rgba(34, 33, 33, 0.2) 0px 8px 24px;
-            text-align: center;
-            align-items: center;
-            border: 1px solid #665f5f70;
-            overflow: hidden;
-            .slider-tool {
-                padding: 0;
-                font-size: 14px;
-                cursor: pointer;
-                font-weight: 600;
-                .img {
-                    img {
-                        width: 100%;
-                        height: 160px;
-                        border-top-right-radius: 8px;
-                        border-top-left-radius: 8px;
-                    }
-                }
-                .name-tool {
-                    font-size: 24px;
-                    font-weight: 600;
-                    margin: 16px 8px;
-                }
-                .price {
-                    width: 72%;
-                    margin: 16px auto;
-                    padding: 8px;
-                    border: 1px solid #0000008f;
-                    border-radius: 8px;
-                }
-                .price-count {
-                    width: 72%;
-                    margin: 16px auto;
-                    padding: 8px;
-                    border: 1px solid #0000008f;
-                    border-radius: 8px;
-                }
-                .view-tool {
-                    width: 72%;
-                    margin: 16px auto;
-                    padding: 8px;
-                    border-radius: 9px;
-                    font-size: 18px;
-                    background-color: rgba(12, 121, 245, 0.74);
-                    position: relative;
-                    display: grid;
-                    place-items: center;
-                    color: white;
-                    font-weight: 600;
-                }
+    .box-slider {
+      display: flex;
+      width: calc(25% - 1.5rem);
+      margin: 8px 0 24px 0;
+      background-color: rgb(250, 250, 250);
+      border-radius: 8px;
+      box-shadow: rgba(34, 33, 33, 0.2) 0px 8px 24px;
+      text-align: center;
+      align-items: center;
+      border: 1px solid #665f5f70;
+      overflow: hidden;
+      .slider-tool {
+        padding: 0;
+        font-size: 14px;
+        cursor: pointer;
+        font-weight: 600;
+        .img {
+          img {
+            width: 100%;
+            height: 160px;
+            border-top-right-radius: 8px;
+            border-top-left-radius: 8px;
+          }
+        }
+        .name-tool {
+          font-size: 24px;
+          font-weight: 600;
+          margin: 16px 8px;
+        }
+        .price {
+          width: 72%;
+          margin: 16px auto;
+          padding: 8px;
+          border: 1px solid #0000008f;
+          border-radius: 8px;
+        }
+        .price-count {
+          width: 72%;
+          margin: 16px auto;
+          padding: 8px;
+          border: 1px solid #0000008f;
+          border-radius: 8px;
+        }
+        .view-tool {
+          width: 72%;
+          margin: 16px auto;
+          padding: 8px;
+          border-radius: 9px;
+          font-size: 18px;
+          background-color: rgba(12, 121, 245, 0.74);
+          position: relative;
+          display: grid;
+          place-items: center;
+          color: white;
+          font-weight: 600;
+        }
 
-                .view-tool::before {
-                    content: "";
-                    position: absolute;
-                    width: calc(102%);
-                    height: calc(109%);
-                    border: 1px solid transparent;
-                    border-radius: 12px;
-                    transition: all 0.3s ease;
-                    opacity: 0;
-                    animation: animation 2s linear infinite;
-                    border: 2px solid rgba(12, 121, 245, 0.74);
-                }
-                .view-tool:hover::before {
-                    opacity: 1;
-                    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-                }
-            }
+        .view-tool::before {
+          content: "";
+          position: absolute;
+          width: calc(102%);
+          height: calc(109%);
+          border: 1px solid transparent;
+          border-radius: 12px;
+          transition: all 0.3s ease;
+          opacity: 0;
+          animation: animation 2s linear infinite;
+          border: 2px solid rgba(12, 121, 245, 0.74);
         }
-        .box-slider:hover {
-           
-            .img{
-                transform:rotate(4deg);
-            }
+        .view-tool:hover::before {
+          opacity: 1;
+          box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
         }
+      }
     }
+    .box-slider:hover {
+      .img {
+        transform: rotate(4deg);
+      }
+    }
+  }
 }
 @keyframes animate-allTool {
-    0%,
-    18%,
-    20%,
-    50.1%,
-    60%,
-    65.1%,
-    80%,
-    90.1%,
-    92% {
-        color: rgba(0, 0, 0, 0.801);
-        box-shadow: none;
-    }
+  0%,
+  18%,
+  20%,
+  50.1%,
+  60%,
+  65.1%,
+  80%,
+  90.1%,
+  92% {
+    color: rgba(0, 0, 0, 0.801);
+    box-shadow: none;
+  }
 
-    18.1%,
-    20.1%,
-    30%,
-    50%,
-    60.1%,
-    65%,
-    80.1%,
-    90%,
-    92.1%,
-    100% {
-        color: rgb(255, 255, 255);
-        text-shadow: rgb(226, 197, 204) 0px 0px 10px,
-            rgb(99, 70, 202) 0px 0px 20px, rgb(160, 126, 240) 0px 0px 40px,
-            rgb(94, 124, 204) 0px 0px 80px, rgb(224, 216, 199) 0px 0px 160px;
-    }
+  18.1%,
+  20.1%,
+  30%,
+  50%,
+  60.1%,
+  65%,
+  80.1%,
+  90%,
+  92.1%,
+  100% {
+    color: rgb(255, 255, 255);
+    text-shadow: rgb(226, 197, 204) 0px 0px 10px, rgb(99, 70, 202) 0px 0px 20px,
+      rgb(160, 126, 240) 0px 0px 40px, rgb(94, 124, 204) 0px 0px 80px,
+      rgb(224, 216, 199) 0px 0px 160px;
+  }
 }
 
-@keyframes animation{
-    50%{
-        filter: hue-rotate(360deg);
-    }
+@keyframes animation {
+  50% {
+    filter: hue-rotate(360deg);
+  }
 }
+/// toast ////
+

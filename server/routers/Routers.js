@@ -10,10 +10,11 @@ router.get("/tool/:id", Controller.getToolDetail);
 router.get("/vps", Controller.getVPS);
 router.get("/vps/:id", Controller.getVPSDetail);
 
-router.get("/users/:userID/usd", Controller.getUSD);
+router.get("/user/:id", Controller.getUSD);
 
 router.get("/discount", Controller.getDiscount);
 
+router.get("/topup/:id", Controller.getHistoryTopup);
 //____________post____________//
 
 router.post("/login", Controller.login);

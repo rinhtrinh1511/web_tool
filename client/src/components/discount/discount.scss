@@ -25,7 +25,7 @@
           background-color: #f2f2f2;
         }
         th:first-child {
-          border-top-left-radius: 8px; /* Border cho cột đầu tiên */
+          border-top-left-radius: 8px;
         }
         th:last-child {
           border-top-right-radius: 8px;
@@ -33,7 +33,7 @@
         tr:last-child td {
           border-bottom: none;
         }
-        tr:hover {
+        .td-hover:hover {
           background-color: #fdfdfd9d;
         }
       }

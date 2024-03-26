@@ -33,6 +33,7 @@ function Main() {
       clearInterval(interval);
     };
   }, [dispatch, isFetched, tools, vpss]);
+
   return (
     <React.Fragment>
       {tools.isLoading ? (

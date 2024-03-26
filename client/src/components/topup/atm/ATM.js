@@ -1,8 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../header/Header";
 import Footer from "../../footer/Footer";
 import "./atm.scss";
 function ATM() {
+  const [id, setId] = useState("");
+  useEffect(() => {
+    const user = localStorage.getItem("userData");
+    const userData = JSON.parse(user);
+    if (user) {
+      setId(userData.user.key);
+    }
+  }, []);
   return (
     <React.Fragment>
       <Header />
@@ -35,7 +43,7 @@ function ATM() {
             </div>
             <div className="stk-atm">
               <span>Nội dung:</span>
-              <span>NAP23456</span>
+              <span>NAP{id}</span>
             </div>
             <div className="stk-atm">
               <p>Do Momo đang quét gay gắt lên sẽ được nạp bằng cơm 💀</p>
@@ -52,7 +60,7 @@ function ATM() {
             </div>
             <div className="stk-atm">
               <span>Nội dung:</span>
-              <span>NAP23456</span>
+              <span>NAP{id}</span>
             </div>
             <div className="stk-atm">
               <p>Nhập đúng nội dung sẽ được cộng tiền tự động.</p>

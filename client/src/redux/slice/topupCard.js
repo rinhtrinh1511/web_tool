@@ -6,15 +6,17 @@ const topupCardSlice = createSlice({
     isLoading: false,
     data: [],
     error: "",
-    isSuccess: true,
+    isSuccess: false,
   },
   reducers: {
     topupCardStart: (state) => {
       state.isLoading = true;
+      state.isSuccess = false;
     },
     topupCardSuccess: (state, action) => {
       state.isLoading = false;
       state.data = action.payload;
+      state.error = "";
       state.isSuccess = true;
     },
     topupCardFalse: (state, action) => {
