@@ -11,7 +11,6 @@ import Swal from "sweetalert2";
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [icon, setIcon] = useState("");
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({
     username: "",
@@ -33,26 +32,26 @@ function Login() {
 
   useEffect(() => {
     setError(data.error);
-    setIcon("error");
     const token = localStorage.getItem("token");
     if (token) {
       navigate("/");
     }
   }, [data, navigate]);
-
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (submitClicked && icon && error) {
-        Toast.fire({
-          icon: icon,
-          title: error,
-        });
-      }
-      setSubmitClicked(false);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, [submitClicked, error, icon, Toast]);
+    if (data.isSuccess) {
+      Toast.fire({
+        icon: "success",
+        title: data.error,
+      });
+    }
+    if (submitClicked) {
+      Toast.fire({
+        icon: "error",
+        title: error,
+      });
+    }
+    setSubmitClicked(false);
+  }, [submitClicked, Toast, error, data]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -61,7 +60,7 @@ function Login() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    login(formData, dispatch, navigate);
+    await login(formData, dispatch, navigate);
     setSubmitClicked(true);
   };
 
@@ -108,13 +107,40 @@ function Login() {
                 }}
               />
 
-              <Button variant="contained" type="submit" fullWidth>
+              <Button
+                variant="contained"
+                type="submit"
+                fullWidth
+                style={{
+                  fontFamily: "Chakra Petch, sans-serif",
+                  fontSize: "14px",
+                  fontWeight: 600,
+                }}
+              >
                 Đăng nhập
               </Button>
 
               <div className="footer-form">
-                <Link to={"/register"}>Đăng kí</Link>
-                <Link to={"/"}>Quên mật khẩu?</Link>
+                <Link
+                  to={"/register"}
+                  style={{
+                    fontFamily: "Chakra Petch, sans-serif",
+                    fontSize: "14px",
+                    fontWeight: 600,
+                  }}
+                >
+                  Đăng kí
+                </Link>
+                <Link
+                  to={"/"}
+                  style={{
+                    fontFamily: "Chakra Petch, sans-serif",
+                    fontSize: "14px",
+                    fontWeight: 600,
+                  }}
+                >
+                  Quên mật khẩu?
+                </Link>
               </div>
             </div>
           </form>

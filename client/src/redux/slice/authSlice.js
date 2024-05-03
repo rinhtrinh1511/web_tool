@@ -31,7 +31,10 @@ const authSlice = createSlice({
       state.error = null;
     },
     resetState: (state) => {
-      state.initialState = initialState;
+      state.isLoading = false;
+      state.userData = {};
+      state.error = null;
+      state.isSuccess = false;
     },
     registerStart: (state) => {
       state.isLoading = true;
@@ -56,6 +59,7 @@ export const {
   registerStart,
   registerFalse,
   registerSuccess,
+  resetState,
 } = authSlice.actions;
 
 export default authSlice.reducer;

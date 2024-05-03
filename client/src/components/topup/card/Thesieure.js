@@ -13,7 +13,8 @@ function Thesieure() {
   const [isToup, setIsTopUp] = useState(false);
   const [historyTopup, setHistoryTopUp] = useState([]);
   const data = useSelector((state) => state.topupCard);
-  const user = localStorage.getItem("userData");
+  const user = localStorage.getItem("info");
+  const userData = JSON.parse(user);
   const [infoCard, setInfoCard] = useState({
     telco: " ",
     amount: " ",
@@ -22,70 +23,79 @@ function Thesieure() {
     key_id: "",
   });
   useEffect(() => {
-    const userData = JSON.parse(user);
     if (user) {
       setInfoCard((prevInfoCard) => ({
         ...prevInfoCard,
-        key_id: userData.user.key,
+        key_id: userData.key_id,
       }));
-      getHistoryTopup(userData.user.key)
+      getHistoryTopup(userData.key_id, localStorage.getItem("token"))
         .then((data) => {
-          if (data) {
-            setHistoryTopUp(data);
-          } else {
-            console.log("Không có dữ liệu từ API");
-          }
+          setHistoryTopUp(data);
         })
         .catch((error) => {
-          console.log("Lỗi khi gọi API: ", error);
+          console.log(error);
         });
     }
-  }, [user]);
+  }, [user, userData.key_id]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setInfoCard({ ...infoCard, [name]: value });
   };
-
   const handleTopup = async (e) => {
     e.preventDefault();
     if (!user) {
       Swal.fire({
-        title: "Vui lòng đăng nhập để tiếp tục",
+        text: "Vui lòng đăng nhập để tiếp tục",
         icon: "error",
       });
     } else {
-      Topup(dispatch, infoCard);
+      await Topup(dispatch, infoCard);
       setIsTopUp(true);
     }
   };
   useEffect(() => {
+    let intervalId;
+    const fetchData = async () => {
+      if (isToup) {
+        await getHistoryTopup(userData.key_id, localStorage.getItem("token"))
+          .then((data) => {
+            setHistoryTopUp(data);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    };
     if (isToup) {
-      const timer = setTimeout(() => {
-        if (data.isSuccess) {
-          if (data.data.status === 99) {
-            Swal.fire({
-              title: data.data.message,
-              icon: "success",
-            });
-          } else {
-            Swal.fire({
-              title: data.data.message,
-              icon: "error",
-            });
-          }
+      fetchData();
+      intervalId = setInterval(fetchData, 10);
+    }
+    return () => clearInterval(intervalId);
+  }, [isToup, userData.key_id]);
+  useEffect(() => {
+    if (isToup) {
+      if (data.isSuccess) {
+        if (data.data.status === 99) {
+          Swal.fire({
+            text: data.data.message,
+            icon: "success",
+          });
         } else {
           Swal.fire({
-            title: data.error,
+            text: data.data.message,
             icon: "error",
           });
         }
-        setIsTopUp(false);
-      }, 1000);
-
-      return () => clearTimeout(timer);
+      } else {
+        Swal.fire({
+          text: data.error,
+          icon: "error",
+        });
+      }
+      setIsTopUp(false);
     }
-  });
+  }, [isToup, data.isSuccess, data.data.status, data.data.message, data.error]);
 
   const renderMenuItem = (value, label) => (
     <MenuItem key={value} value={value} style={menuItemStyle}>
@@ -212,14 +222,16 @@ function Thesieure() {
             <header>Lưu ý</header>
             <div className="ab">
               <p>
-                1. Nạp tiền thông qua API của THESIEURE sẽ được duyệt tự động,
-                Nhưng sẽ bị trừ chiết khấu của nhà mạng.
+                1. Nạp tiền thông qua API của THESIEURE sẽ được duyệt tự động.
+              </p>
+              <p>2. chọn sai mệnh giá sẽ bị trừ 50% giá trị.</p>
+
+              <p>
+                3. Server lỏ có thể xử lý ngay lập tức việc của bạn là nạp đúng
+                thẻ đừng spam (quá 3 lần sai thì đợi vài tiếng).
               </p>
               <p>
-                2. chọn sai mệnh giá sẽ bị trừ 50% giá trị đây là bên THESIEURE
-              </p>
-              <p>
-                3. nạp thẻ quá lâu mà chưa thấy cộng, vui lòng liên hệ admin.
+                4. nạp thẻ quá lâu mà chưa thấy cộng, vui lòng liên hệ admin.
               </p>
             </div>
           </div>

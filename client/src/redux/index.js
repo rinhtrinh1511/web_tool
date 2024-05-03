@@ -6,6 +6,8 @@ import disCountSlice from "./slice/discount";
 import purchase from "./slice/purchase";
 import topupCard from "./slice/topupCard";
 import historySlice from "./slice/history";
+import ws from "./slice/ws";
+
 const store = configureStore({
   reducer: {
     auth: authSlice,
@@ -15,6 +17,7 @@ const store = configureStore({
     purchase: purchase,
     topupCard: topupCard,
     history: historySlice,
+    websocket: ws,
   },
 });
 

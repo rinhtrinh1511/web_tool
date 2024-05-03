@@ -2,27 +2,106 @@ import React, { useEffect, useState } from "react";
 import Header from "../header/Header";
 import Footer from "../footer/Footer";
 import { useDispatch, useSelector } from "react-redux";
-import { HistoryAll } from "../../redux/request/api";
+import {
+  ExtendVPS,
+  HistoryAll,
+  ResetVPS,
+  getHistoryOrderVPS,
+} from "../../redux/request/api";
 import "./history.scss";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faDownload, faEye } from "@fortawesome/free-solid-svg-icons";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Modal from "@mui/material/Modal";
+import { Button } from "@mui/material";
+import Swal from "sweetalert2";
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "white",
+  boxShadow: 8,
+  borderRadius: 2,
+  p: 2,
+};
 function History() {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   const [history, setHistory] = useState([]);
+  const [historyVPS, setHistoryVPS] = useState([]);
   const [id, setId] = useState("");
+  const [keyID, setKeyID] = useState("");
   const dispatch = useDispatch();
   const data = useSelector((state) => state.history);
-  const user = localStorage.getItem("userData");
+  const user = localStorage.getItem("info");
+  console.log(id);
+  console.log(keyID);
   useEffect(() => {
     if (user) {
       const userData = JSON.parse(user);
-      setId(userData.user.id);
+      setId(userData.key_id);
+      setKeyID(userData.key_id);
+      getHistoryOrderVPS(userData.key_id, localStorage.getItem("token"))
+        .then((data) => {
+          setHistoryVPS(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
-    HistoryAll(dispatch, id);
+    HistoryAll(dispatch, id, localStorage.getItem("token"));
   }, [dispatch, id, user]);
-
   useEffect(() => {
     setHistory(data.history);
   }, [data.history]);
+  const combinedArray = history.concat(historyVPS);
 
+  const [dataToShow, setDataToShow] = useState(null);
+  const [action, setAction] = useState(false);
+  const [message, setMessage] = useState("");
+  const resetVPS = async () => {
+    await ResetVPS(dataToShow.vps_id)
+      .then((data) => {
+        setMessage(data);
+      })
+      .catch((err) => {});
+    setAction(true);
+    setOpen(false);
+  };
+
+  const extendVPS = async () => {
+    await ExtendVPS(dataToShow.vps_id, keyID)
+      .then((data) => {
+        setMessage(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    setAction(true);
+    setOpen(false);
+  };
+  useEffect(() => {
+    if (action) {
+      if (message.message) {
+        Swal.fire({
+          text: message.message,
+          icon: "success",
+        });
+        setAction(false);
+      } else {
+        Swal.fire({
+          text: message,
+          icon: "error",
+        });
+        setAction(false);
+      }
+    }
+  }, [action, message]);
+  console.log(combinedArray);
   return (
     <React.Fragment>
       <Header />
@@ -41,7 +120,7 @@ function History() {
             </tr>
           </thead>
           <tbody>
-            {history.length === 0 ? (
+            {combinedArray.length === 0 ? (
               <tr>
                 <td colSpan="7">
                   <div style={{ marginTop: "1rem" }}>
@@ -77,40 +156,193 @@ function History() {
                 </td>
               </tr>
             ) : (
-              history.map((history, index) => {
+              combinedArray.map((data, index) => {
+                let ads;
                 let formattedTime = "không xác định";
-                if (history.time) {
+
+                if (data.category === "tools") {
                   try {
-                    const timeString = new Date(history.time).toISOString();
+                    const timeString = new Date(data.time).toISOString();
                     formattedTime = `${timeString.slice(
                       0,
                       10
                     )} ${timeString.slice(11, 19)}`;
                   } catch (error) {}
+                } else {
+                  try {
+                    formattedTime = data.date_create.slice(0, 10);
+                  } catch (error) {}
+                  ads = true;
                 }
                 const priceFormatted = new Intl.NumberFormat("vi-VN", {
                   style: "currency",
                   currency: "VND",
-                }).format(history.total);
+                }).format(data.total);
 
                 return (
-                  <tr key={index} className="td-hover">
+                  <tr
+                    key={index}
+                    className="td-hover"
+                    style={{ position: "relative" }}
+                  >
                     <td>{index + 1}</td>
                     <td>
                       <span
                         style={{
                           borderRadius: "4px",
                           padding: "4px",
-                          backgroundColor: "red",
+                          backgroundColor: "#ffff6e",
                         }}
                       >
-                        {history.code}
+                        {data.code ? data.code : data.vps_id}
                       </span>
                     </td>
-                    <td>{history.category}</td>
+                    <td>{data.category ? data.category : "Vps"}</td>
                     <td>{priceFormatted}</td>
-                    <td>{history.discount === 1 ? "có" : "Không"}</td>
-                    <td>tải xuống</td>
+                    <td>{data.discount === 1 ? "có" : "Không"}</td>
+                    {ads ? (
+                      <td>
+                        <div
+                          onClick={() => {
+                            handleOpen();
+                            setDataToShow(data);
+                          }}
+                        >
+                          <span
+                            style={{
+                              fontSize: 12,
+                              fontFamily: "Chakra Petch, sans-serif",
+                              fontWeight: 600,
+                              color: "white",
+                              backgroundColor: "#28a745",
+                              padding: 4,
+                              borderRadius: 4,
+                            }}
+                          >
+                            <FontAwesomeIcon icon={faEye} /> Show
+                          </span>
+                        </div>
+                        <Modal
+                          open={open}
+                          onClose={handleClose}
+                          aria-labelledby="simple-modal-title"
+                          aria-describedby="simple-modal-description"
+                          sx={{
+                            "& .MuiBackdrop-root": {
+                              backgroundColor: "rgb(0 0 0 / 14%)", // Áp dụng màu và độ mờ cho backdrop
+                            },
+                          }}
+                        >
+                          <Box sx={style}>
+                            <Typography
+                              id="modal-modal-title"
+                              variant="h6"
+                              component="h2"
+                            >
+                              <span
+                                style={{
+                                  fontSize: 18,
+                                  fontFamily: "Chakra Petch, sans-serif",
+                                  fontWeight: 600,
+                                }}
+                              >
+                                Thông tin vps của bạn
+                              </span>
+                            </Typography>
+                            <Typography
+                              id="modal-modal-description"
+                              sx={{
+                                mt: 2,
+                                fontFamily: "Chakra Petch, sans-serif",
+                                fontSize: "14px",
+                                fontWeight: 600,
+                              }}
+                            >
+                              {dataToShow ? (
+                                <>
+                                  <span>IP: {dataToShow.ip}</span>
+                                  <br />
+                                  <span>Tài khoản: {dataToShow.username}</span>
+                                  <br />
+                                  <span>Mật khẩu: {dataToShow.password}</span>
+                                  <br />
+                                  <span>
+                                    ngày hết hạn:{" "}
+                                    {`${dataToShow.next_due_date.slice(
+                                      0,
+                                      10
+                                    )}, vào lúc:  ${dataToShow.next_due_date.slice(
+                                      11,
+                                      19
+                                    )}`}
+                                  </span>
+                                  <br />
+                                  <span>
+                                    Trạng thái:{" "}
+                                    <span
+                                      style={{
+                                        backgroundColor: "#28a728",
+                                        color: "white",
+                                        padding: 2,
+                                        borderRadius: 4,
+                                      }}
+                                    >
+                                      Active
+                                    </span>
+                                  </span>
+                                  <br />
+                                  <li style={{ marginTop: 12 }}>
+                                    <Button
+                                      size="small"
+                                      variant="outlined"
+                                      style={{
+                                        marginRight: 12,
+                                        fontFamily: "Chakra Petch, sans-serif",
+                                        fontSize: "14px",
+                                        fontWeight: 600,
+                                      }}
+                                      onClick={resetVPS}
+                                    >
+                                      restart
+                                    </Button>
+                                    <Button
+                                      size="small"
+                                      variant="contained"
+                                      style={{
+                                        fontFamily: "Chakra Petch, sans-serif",
+                                        fontSize: "14px",
+                                        fontWeight: 600,
+                                      }}
+                                      onClick={extendVPS}
+                                    >
+                                      Gia hạn
+                                    </Button>
+                                  </li>
+                                  <li
+                                    style={{
+                                      marginTop: 12,
+                                      color: "#00af0fc7",
+                                    }}
+                                  >
+                                    Gia hạn mặc định là 1 tháng với giá tiền là
+                                    85.000đ
+                                  </li>
+                                </>
+                              ) : (
+                                " "
+                              )}
+                            </Typography>
+                          </Box>
+                        </Modal>
+                      </td>
+                    ) : (
+                      <td>
+                        <span className="action">
+                          <FontAwesomeIcon icon={faDownload} /> Tải xuống
+                        </span>
+                      </td>
+                    )}
+
                     <td>{formattedTime}</td>
                   </tr>
                 );
@@ -118,6 +350,53 @@ function History() {
             )}
           </tbody>
         </table>
+        {/* {showHello && (
+          <div className="show-vps">
+            <div className="content-lable1">
+              <div className="content-lable">
+                <span>Thông tin VPS của bạn</span>
+                <span
+                  className="close"
+                  style={{ cursor: "pointer" }}
+                  onClick={handleCloseToast}
+                >
+                  <FontAwesomeIcon icon={faXmark} />
+                </span>
+              </div>
+
+              <div className="info-show">
+                <span>IP: {dataToShow.ip}</span>
+                <br />
+                <span>Tài khoản: {dataToShow.username}</span>
+                <br />
+                <span>Mật khẩu: {dataToShow.password}</span>
+                <br />
+                <span>
+                  ngày hết hạn:{" "}
+                  {`${dataToShow.next_due_date.slice(
+                    0,
+                    10
+                  )}, vào lúc:  ${dataToShow.next_due_date.slice(11, 19)}`}
+                </span>
+                <br />
+                <span>
+                  trạng thái:{" "}
+                  <span
+                    style={{
+                      backgroundColor: "#28a728",
+                      color: "white",
+                      padding: 2,
+                      borderRadius: 4,
+                    }}
+                  >
+                    {dataToShow.vps_status}
+                  </span>
+                </span>
+                <br />
+              </div>
+            </div>
+          </div>
+        )} */}
       </div>
       <Footer />
     </React.Fragment>

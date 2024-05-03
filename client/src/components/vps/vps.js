@@ -1,71 +1,63 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getVPSDetail, purchaseProduct } from "../../redux/request/api";
+import { createOderVPSHash, getVPSDetail } from "../../redux/request/api";
 import Header from "../header/Header";
 import Footer from "../footer/Footer";
 import Swal from "sweetalert2";
-
+import vps_detail from "../../img/vps-detail.png";
 function VpsDetail() {
   const [data, setData] = useState();
   const [data1, setData1] = useState({});
   const [discount, setDiscount] = useState("");
   const [isPurchasing, setIsPurchasing] = useState(false);
   const { id } = useParams();
-  const [info, setInfo] = useState({
-    userId: "",
-    productId: "",
-    discount: "",
-    category: "",
+  const [dataPost, setDataPost] = useState({
+    id: "",
+    key_id: "",
   });
   const dispatch = useDispatch();
-  const vpsDetail = useSelector((state) => state.vps);
   const purchase = useSelector((state) => state.purchase);
-
   useEffect(() => {
-    if (id) {
-      getVPSDetail(dispatch, id);
-    }
+    const fetchData = async () => {
+      if (id) {
+        await getVPSDetail(dispatch, id).then((data) => {
+          setData(data);
+        });
+      }
+    };
+    fetchData();
   }, [dispatch, id]);
   useEffect(() => {
     const user = localStorage.getItem("userData");
     const userData = JSON.parse(user);
     if (user) {
+      setDataPost({ key_id: userData.user.key, id: id });
       setData1(userData.user);
     }
-    setInfo({
-      productId: id,
-      userId: data1.id,
-      discount: discount,
-      category: "vps",
-    });
-    setData(vpsDetail.vps);
-  }, [id, vpsDetail.vps, data1.id, discount]);
+  }, [id, data1.id, discount]);
 
-  const handleBuy = (e) => {
-    purchaseProduct(dispatch, info);
+  const handleBuy = async (e) => {
+    // purchaseProduct(dispatch, info);
+   await createOderVPSHash(dispatch, dataPost, localStorage.getItem("token"));
     setIsPurchasing(true);
   };
   useEffect(() => {
     if (isPurchasing) {
-      const timer = setTimeout(() => {
-        if (purchase.isSuccess) {
-          Swal.fire({
-            title: "Thanh toán thành công.",
-            icon: "success",
-          });
-        } else {
-          Swal.fire({
-            title: purchase.error.error,
-            icon: "error",
-          });
-        }
-        setIsPurchasing(false);
-      }, 1000);
-
-      return () => clearTimeout(timer);
+      if (purchase.isSuccess) {
+        Swal.fire({
+          text: "Thanh toán thành công.",
+          icon: "success",
+        });
+      } else {
+        Swal.fire({
+          text: purchase.error,
+          icon: "error",
+        });
+      }
+      setIsPurchasing(false);
     }
-  }, [isPurchasing, purchase.isSuccess, purchase.error.error]);
+  }, [isPurchasing, purchase.isSuccess, purchase.error, dispatch]);
   return (
     <React.Fragment>
       <Header />
@@ -106,10 +98,7 @@ function VpsDetail() {
                             ))}
                           </div>
 
-                          <img
-                            alt=""
-                            src="https://cloudmini.net/wp-content/uploads/2023/04/virtual-private-server-png.png"
-                          ></img>
+                          <img loading="lazy" alt="" src={vps_detail}></img>
                         </ul>
                         <div className="price-product">
                           Giá ưu đãi: {priceFormatted}

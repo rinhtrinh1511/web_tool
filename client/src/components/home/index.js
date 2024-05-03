@@ -5,13 +5,13 @@ import Main from "../main/Main";
 import Footer from "../footer/Footer";
 
 function HomePage() {
-    return (
-        <div className="home-wrap">
-            <Header />
-            <Main />
-            <Footer />
-        </div>
-    );
+  return (
+    <div className="home-wrap">
+      <Header />
+      <Main />
+      <Footer />
+    </div>
+  );
 }
 
 export default HomePage;

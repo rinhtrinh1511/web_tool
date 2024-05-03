@@ -3,18 +3,19 @@ import { Routes, Route, BrowserRouter } from "react-router-dom";
 import HomePage from "./components/home";
 import "react-toastify/dist/ReactToastify.css";
 import "./index.css";
+import "@fontsource/chakra-petch/400.css";
 import Login from "./components/login/Login";
 import Register from "./components/register/Register";
 import Loading from "./components/loading";
 import Profile from "./components/profile/Profile";
 import ToolDetail from "./components/tool/Tool";
 import VpsDetail from "./components/vps/vps";
-import "@fontsource/chakra-petch/400.css";
 import ATM from "./components/topup/atm/ATM";
 import Discount from "./components/discount/Discount";
 import Thesieure from "./components/topup/card/Thesieure";
 import History from "./components/history/History";
 import Active from "./components/active/Active";
+import OptionVPS from "./components/vps/options";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
           <Route path="/discount" element={<Discount />} />
           <Route path="/history" element={<History />} />
           <Route path="/active" element={<Active />} />
+          <Route path="/vps-option" element={<OptionVPS />} />
         </Routes>
       </BrowserRouter>
     </div>

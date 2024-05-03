@@ -9,10 +9,9 @@ import Swal from "sweetalert2";
 
 function ToolDetail() {
   const [data, setData] = useState();
-  const [data1, setData1] = useState({});
   const [discount, setDiscount] = useState("");
   const [isPurchasing, setIsPurchasing] = useState(false);
-  const { id } = useParams();
+
   const [info, setInfo] = useState({
     userId: "",
     productId: "",
@@ -20,58 +19,53 @@ function ToolDetail() {
     category: "",
   });
   const dispatch = useDispatch();
-  const toolDetail = useSelector((state) => state.tools);
   const purchase = useSelector((state) => state.purchase);
+  const { id } = useParams();
+  const user = localStorage.getItem("info");
+  const userData = JSON.parse(user);
   useEffect(() => {
-    if (id) {
-      getToolDetail(dispatch, id);
-    }
+    const fetchData = async () => {
+      if (id) {
+        await getToolDetail(dispatch, id).then((data) => {
+          setData(data);
+        });
+      }
+    };
+    fetchData();
   }, [dispatch, id]);
   useEffect(() => {
-    const user = localStorage.getItem("userData");
-    const userData = JSON.parse(user);
-    if (user) {
-      setData1(userData.user);
-    }
     setInfo({
+      userId: userData.key_id,
       productId: id,
-      userId: data1.id,
       discount: discount,
       category: "tools",
     });
-    setData(toolDetail.tool);
-  }, [id, toolDetail.tool, data1.id, discount]);
+  }, [id, discount, userData.key_id]);
 
-  const handleBuy = (e) => {
-    e.preventDefault();
-    purchaseProduct(dispatch, info);
+  const handleBuy = async (e) => {
+    await purchaseProduct(dispatch, info, localStorage.getItem("token"));
     setIsPurchasing(true);
   };
   useEffect(() => {
     if (isPurchasing) {
-      const timer = setTimeout(() => {
-        if (purchase.isSuccess) {
-          Swal.fire({
-            title: "Thanh toán thành công.",
-            icon: "success",
-          });
-        } else {
-          Swal.fire({
-            title: purchase.error.error,
-            icon: "error",
-          });
-        }
-        setIsPurchasing(false);
-      }, 1000);
-
-      return () => clearTimeout(timer);
+      if (purchase.error === "Thanh toán thành công") {
+        Swal.fire({
+          text: purchase.error,
+          icon: "success",
+        });
+      } else {
+        Swal.fire({
+          text: purchase.error,
+          icon: "error",
+        });
+      }
+      setIsPurchasing(false);
     }
-  }, [isPurchasing, purchase.isSuccess, purchase.error.error]);
+  }, [isPurchasing, purchase.isSuccess, purchase.error.error, purchase.error]);
   return (
     <React.Fragment>
       <Header />
       <div className="tool-detail">
-      
         <div className="detail-product">
           <div className="header-name">TOOL NGỌC RỒNG</div>
           {data &&
@@ -98,7 +92,8 @@ function ToolDetail() {
                           </div>
 
                           <img
-                            src="https://img.zing.vn/upload/gn/source/2018/T72018/Ban%20nang%20vo%20cuc.png"
+                            loading="lazy"
+                            src="https://dbgbh.bn-ent.net/archive/2022/assets/img/shared/mainvisual_pc.png"
                             alt=""
                             style={{ width: "60%", borderRadius: "8px" }}
                           />

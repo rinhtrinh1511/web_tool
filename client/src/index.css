@@ -21,3 +21,66 @@ a {
 li {
   list-style: none;
 }
+
+@media (max-width: 1200px) {
+  body {
+    background-image: none;
+  }
+  .a {
+    display: none;
+  }
+  .header-wrap {
+    display: none;
+  }
+  .main-wrap {
+    display: none;
+  }
+  .footer {
+    display: none;
+  }
+  .toast {
+    display: none;
+  }
+  .pc-warning {
+    text-align: center;
+    display: flex;
+    height: 100%;
+    align-items: center;
+    display: block;
+    font-size: 20px;
+    font-weight: 600;
+    z-index: 99999;
+    color: black;
+  }
+}
+
+@media (min-width: 1201px) {
+  .pc-warning {
+    display: none;
+  }
+}
+
+@media (max-width: 1563px) {
+  #header-mid {
+    width: 70%;
+  }
+  #header-login {
+    display: none;
+  }
+  #box-slider {
+    width: 30%;
+  }
+  #hello {
+    display: block;
+    display: flex;
+    background-color: red;
+    width: 15%;
+    align-items: center;
+    height: 100%;
+  }
+}
+@media (min-width: 1563px) {
+  #hello {
+    display: none;
+  }
+}

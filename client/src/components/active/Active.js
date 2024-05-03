@@ -20,6 +20,13 @@ function Active() {
           fullWidth
           placeholder="Key cũ"
           style={{ height: "52px" }}
+          InputProps={{
+            style: {
+              fontFamily: "Chakra Petch, sans-serif",
+              fontSize: "14px",
+              fontWeight: 600,
+            },
+          }}
         />
         <TextField
           id="outlined-basic1"
@@ -28,8 +35,23 @@ function Active() {
           fullWidth
           placeholder="Key mới"
           style={{ height: "52px" }}
+          InputProps={{
+            style: {
+              fontFamily: "Chakra Petch, sans-serif",
+              fontSize: "14px",
+              fontWeight: 600,
+            },
+          }}
         />
-        <Button variant="contained" type="submit">
+        <Button
+          variant="contained"
+          type="submit"
+          style={{
+            fontFamily: "Chakra Petch, sans-serif",
+            fontSize: "14px",
+            fontWeight: 600,
+          }}
+        >
           thay đổi
         </Button>
       </div>

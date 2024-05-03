@@ -1,23 +1,35 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Header from "../header/Header";
 import Footer from "../footer/Footer";
 import { useDispatch, useSelector } from "react-redux";
 import { register } from "../../redux/request/api";
 import { Button, TextField } from "@mui/material";
+import Swal from "sweetalert2";
 
 function Register() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [submitClicked, setSubmitClicked] = useState(false);
   const { err: errorMessage } = useSelector((state) => state.auth);
-
+  // const data = useSelector((state) => state.auth);
   const [formData, setFormData] = useState({
     email: "",
     username: "",
     password: "",
     confirmPassword: "",
   });
-
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 1000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    },
+  });
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
@@ -25,9 +37,24 @@ function Register() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    register(formData, dispatch, navigate);
+    await register(formData, dispatch, navigate);
+    setSubmitClicked(true);
   };
-
+  useEffect(() => {
+    if (!errorMessage) {
+      Toast.fire({
+        icon: "success",
+        title: "Đăng kí thành công",
+      });
+    }
+    if (submitClicked) {
+      Toast.fire({
+        icon: "error",
+        title: errorMessage,
+      });
+    }
+    setSubmitClicked(false);
+  }, [submitClicked, errorMessage, Toast]);
   return (
     <React.Fragment>
       <Header />
@@ -103,12 +130,21 @@ function Register() {
                   },
                 }}
               />
-              <Button variant="contained" type="submit" fullWidth>
+              <Button
+                variant="contained"
+                type="submit"
+                fullWidth
+                style={{
+                  fontFamily: "Chakra Petch, sans-serif",
+                  fontSize: "14px",
+                  fontWeight: 600,
+                }}
+              >
                 Đăng ký
               </Button>
-              <h4 style={{ textAlign: "center", color: "red" }}>
+              {/* <h4 style={{ textAlign: "center", color: "red" }}>
                 {errorMessage}
-              </h4>
+              </h4> */}
               <Link to={"/login"}>
                 <div
                   className="footer-form"
@@ -117,7 +153,15 @@ function Register() {
                     display: "block",
                   }}
                 >
-                  <Button variant="contained" fullWidth>
+                  <Button
+                    variant="contained"
+                    fullWidth
+                    style={{
+                      fontFamily: "Chakra Petch, sans-serif",
+                      fontSize: "14px",
+                      fontWeight: 600,
+                    }}
+                  >
                     đăng nhập
                   </Button>
                 </div>
